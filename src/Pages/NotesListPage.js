@@ -14,7 +14,7 @@ const NotesListPage = () => {
     setNotes(data);
   };
 
-  return <div>{notes}</div>;
+  return <div>notes</div>;
 };
 
 export default NotesListPage;
