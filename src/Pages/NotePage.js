@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { ReactComponent as ArrowLeft } from "../assets/back-button.svg";
 
 const NotePage = () => {
@@ -16,16 +16,46 @@ const NotePage = () => {
     getNote();
   }, [id]);
 
+  let updateNote = async () => {
+    fetch(`/notes/${id}/update/`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(note),
+    });
+  };
+
+  let deleteNote = async () => {
+    fetch(`/notes/${id}/delete/`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(note),
+    });
+  };
+
+  let handleNoteSave = () => {
+    updateNote();
+  };
+
   return (
     <div className="note">
       <div className="note-header">
         <h3>
           <Link to="/">
-            <ArrowLeft />
+            <ArrowLeft onClick={handleNoteSave} />
+            <button onClick={deleteNote}>Delete</button>
           </Link>
         </h3>
       </div>
-      <textarea defaultValue={note?.body}></textarea>
+      <textarea
+        onChange={(e) => {
+          setNote({ ...note, body: e.target.value });
+        }}
+        defaultValue={note?.body}
+      ></textarea>
     </div>
   );
 };
